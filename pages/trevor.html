@@ -1,0 +1,365 @@
+<title>Trevor BIST</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@100;300;600&family=Manrope:wght@400;500;700&display=swap">
+<style>
+  /* Layout: misty-mountain glass scene. Giant thin condensed name over layered SVG ridges,
+     floating frosted panels for About, Study and Games, and a mood bar that re-tints the scene. */
+  :root {
+    --sky1: #7fa1a0; --sky2: #35514f; --m1: #284240; --m2: #1c3030; --accent: #35d1ae;
+    --ink: #f4fbf9; --soft: #d3e6e1; --pill: #131919; --body-text: #eaf5f2;
+    --glass: color-mix(in srgb, var(--sky2) 52%, transparent);
+    --glass-line: rgba(255,255,255,.26);
+    --hover: rgba(255,255,255,.22); --hover-soft: rgba(255,255,255,.1); --row-bg: rgba(0,0,0,.2);
+    --name-a: #fff; --name-b: rgba(255,255,255,.35); --ghost: rgba(255,255,255,.26);
+    --sel-bg: #fff; --sel-fg: #0e1b1a; --mk: #fff; --focus: #fff; --chip-bg: color-mix(in srgb, var(--sky2) 40%, transparent);
+    --display: "Antonio", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+    --body: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+  :root[data-mood="night"] { --sky1: #4a5554; --sky2: #0f1616; --m1: #0b1010; --m2: #060909; --accent: #9ad6c8; }
+  :root[data-mood="deep"]  { --sky1: #2f6b6a; --sky2: #0b2a2b; --m1: #071d1e; --m2: #041213; --accent: #2ec4a6; }
+  :root[data-mood="mist"]  { --sky1: #7fa1a0; --sky2: #35514f; --m1: #284240; --m2: #1c3030; --accent: #35d1ae; }
+  :root[data-mood="dusk"]  { --sky1: #c9703f; --sky2: #5a2c22; --m1: #3a1b17; --m2: #240f0d; --accent: #ffc08a; }
+
+  /* Light theme: re-tints the same four moods with pale skies and dark ink */
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --ink: #10201f; --soft: #3d5654; --pill: #ffffff; --body-text: #1f3836;
+    --glass: rgba(255,255,255,.55); --glass-line: rgba(16,32,31,.16);
+    --hover: rgba(16,32,31,.1); --hover-soft: rgba(16,32,31,.06); --row-bg: rgba(255,255,255,.55);
+    --name-a: #10201f; --name-b: rgba(16,32,31,.4); --ghost: rgba(255,255,255,.55);
+    --sel-bg: #10201f; --sel-fg: #fff; --mk: #10201f; --focus: #10201f; --chip-bg: rgba(255,255,255,.5);
+  }
+  :root[data-theme="light"][data-mood="night"] { --sky1: #d3d9d8; --sky2: #98a5a4; --m1: #6a7977; --m2: #4a5856; --accent: #1d5c52; }
+  :root[data-theme="light"][data-mood="deep"]  { --sky1: #c4e3df; --sky2: #86bdb8; --m1: #4f8f8b; --m2: #2f6d6a; --accent: #0a6e5c; }
+  :root[data-theme="light"][data-mood="mist"]  { --sky1: #e1eeeb; --sky2: #adcdc8; --m1: #80a9a3; --m2: #5d8782; --accent: #0e7a66; }
+  :root[data-theme="light"][data-mood="dusk"]  { --sky1: #f8dcc2; --sky2: #e9a67f; --m1: #b96a4f; --m2: #8a4a3a; --accent: #9a3d12; }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; overflow-x: clip; }
+  body {
+    margin: 0; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.7;
+    background: var(--m2) linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 70%, var(--m2) 100%) fixed;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0;
+    overflow-x: hidden;
+  }
+  p { margin: 0; } h1, h2, h3 { margin: 0; font-weight: 400; }
+  .wrap { width: min(1100px, 100%); margin: 0 auto; position: relative; z-index: 2; }
+  .glass { background: var(--glass); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2); border: 1px solid var(--glass-line); border-radius: 28px; transition: background .5s, border-color .5s; }
+  .cap { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--soft); }
+
+  /* scene */
+  .scene { position: absolute; inset: 0 0 auto 0; height: 880px; overflow: hidden; z-index: 0; pointer-events: none; }
+  .cloud { position: absolute; border-radius: 50%; filter: blur(46px); background: rgba(255,255,255,.28); }
+  .c1 { width: 520px; height: 150px; left: -120px; top: 120px; } .c2 { width: 640px; height: 170px; right: -160px; top: 300px; opacity: .8; } .c3 { width: 420px; height: 120px; left: 30%; top: 520px; opacity: .6; }
+  .ridge { position: absolute; left: -5%; width: 110%; bottom: 0; height: 100%; transition: transform .2s ease-out; }
+  .ridge path { transition: fill .5s; }
+
+  /* nav */
+  .nav { position: fixed; z-index: 20; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); display: flex; gap: 4px; padding: 6px; border-radius: 22px; }
+  .nav a { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 16px; color: var(--ink); transition: background .2s; }
+  .nav a:hover, .nav a.on, .nav .theme:hover { background: var(--hover); }
+  .nav .theme { width: 46px; height: 46px; display: grid; place-items: center; border: 0; padding: 0; border-radius: 16px; background: transparent; color: var(--ink); cursor: pointer; border-left: 0; }
+  .nav .sep { width: 1px; margin: 8px 2px; background: var(--glass-line); }
+  .theme .sun { display: none; } :root[data-theme="light"] .theme .sun { display: block; } :root[data-theme="light"] .theme .moon { display: none; }
+  .nav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* hero */
+  .hero { position: relative; min-height: 640px; padding-top: 70px; }
+  .name { font-family: var(--display); font-weight: 100; text-transform: uppercase; font-size: clamp(5.2rem, 25vw, 16rem); line-height: .86; letter-spacing: .01em; background: linear-gradient(180deg, var(--name-a) 30%, var(--name-b) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .ghost { position: absolute; left: 0; right: 0; top: 330px; font-family: var(--body); font-weight: 700; font-size: clamp(6rem, 28vw, 19rem); line-height: 1; letter-spacing: -.04em; color: var(--ghost); text-align: center; z-index: -1; user-select: none; }
+  .tagline { margin-top: 18px; max-width: 26ch; font-size: clamp(1.1rem, 2.6vw, 1.5rem); line-height: 1.45; font-weight: 500; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .chip { padding: 8px 16px; border-radius: 999px; border: 1px solid var(--glass-line); background: var(--chip-bg); font-size: .85rem; backdrop-filter: blur(10px); }
+
+  .float-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top: 40px; }
+  .float-grid > * { min-width: 0; }
+  .card { padding: 28px; }
+  .card h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: 12px; }
+  .card p + p { margin-top: 12px; }
+  .card p { color: var(--body-text); }
+  .pillbox { margin-top: 18px; background: var(--pill); border-radius: 22px; padding: 16px 20px; font-weight: 700; font-size: 1.05rem; line-height: 1.35; }
+  .pillbox small { display: block; font-weight: 500; color: var(--soft); font-size: .78rem; margin-top: 4px; }
+
+  /* mood bar */
+  .mood { padding: 20px 22px 18px; margin-top: 20px; }
+  .mood .cap { display: block; margin-bottom: 10px; }
+  .marker { position: relative; height: 12px; }
+  .marker i { position: absolute; top: 0; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 10px solid var(--mk); transform: translateX(-50%); transition: left .3s; }
+  .bar { display: flex; border-radius: 999px; overflow: hidden; height: 30px; }
+  .bar button { flex: 1; border: 0; padding: 0; cursor: pointer; }
+  .bar button:nth-child(1) { background: #0c0c0c; } .bar button:nth-child(2) { background: #0f3b3c; } .bar button:nth-child(3) { background: #1ba58c; } .bar button:nth-child(4) { background: #e87a2c; }
+
+  section { padding-top: 56px; scroll-margin-top: 20px; }
+  .sec-title { font-family: var(--display); font-weight: 300; text-transform: uppercase; font-size: clamp(2.6rem, 9vw, 5.5rem); line-height: 1; letter-spacing: .02em; margin-bottom: 20px; }
+
+  /* games */
+  .games { display: grid; grid-template-columns: 150px 1fr; gap: 20px; align-items: start; }
+  .games > * { min-width: 0; }
+  .picker { padding: 14px; display: flex; flex-direction: column; gap: 12px; border-radius: 30px; }
+  .pick { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px; border: 1px solid transparent; border-radius: 22px; background: transparent; color: var(--ink); font: inherit; cursor: pointer; transition: background .2s, border-color .2s; }
+  .pick b { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; font-size: .9rem; letter-spacing: .06em; border: 1px solid var(--glass-line); background: var(--hover-soft); }
+  .pick span { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+  .pick:hover { background: var(--hover-soft); }
+  .pick[aria-selected="true"] { border-color: var(--ink); background: var(--hover); }
+  .pick[aria-selected="true"] b { background: var(--sel-bg); color: var(--sel-fg); border-color: var(--sel-bg); }
+  .detail h3 { font-family: var(--display); font-weight: 600; font-size: 2rem; text-transform: uppercase; letter-spacing: .02em; }
+  .detail .lead { margin-top: 6px; color: var(--body-text); max-width: 52ch; }
+  .titles { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
+  .titles li { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; border-radius: 18px; background: var(--row-bg); }
+  .titles li svg { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 3px; stroke: var(--accent); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .titles strong { display: block; font-weight: 700; }
+  .titles span { color: var(--soft); font-size: .9rem; }
+
+  .study { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .study > * { min-width: 0; }
+  .study .card { padding: 24px; }
+  .study h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; }
+  .study p { color: var(--body-text); font-size: .95rem; }
+
+  footer { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 60px 40px; font-size: 1.15rem; flex-wrap: wrap; }
+  footer a { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; }
+  footer svg { width: 56px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .barcode { display: block; width: 110px; height: 34px; opacity: .85; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+  /* session timeout */
+  .sess { position: fixed; inset: 0; z-index: 100; display: none; place-items: center; padding: 16px; background: rgba(6,12,12,.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+  .sess.on { display: grid; }
+  .sess .box { width: min(420px, 100%); padding: 32px 28px; text-align: center; background: color-mix(in srgb, var(--sky2) 80%, #000 0%); }
+  :root[data-theme="light"] .sess .box { background: rgba(255,255,255,.92); }
+  .sess h2 { font-family: var(--display); font-weight: 600; text-transform: uppercase; font-size: 2rem; letter-spacing: .02em; margin-bottom: 8px; }
+  .sess p { color: var(--body-text); }
+  .sess .count { font-family: var(--display); font-size: 4rem; line-height: 1.1; margin: 10px 0 4px; font-variant-numeric: tabular-nums; }
+  .sess .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+  .sess button { font: inherit; font-weight: 700; cursor: pointer; padding: 11px 22px; border-radius: 999px; border: 1px solid var(--glass-line); background: var(--sel-bg); color: var(--sel-fg); }
+  .sess button.ghost-btn { background: transparent; color: var(--ink); }
+
+  @media (max-width: 820px) {
+    .float-grid { grid-template-columns: 1fr; }
+    .study { grid-template-columns: 1fr; }
+    .games { grid-template-columns: 1fr; }
+    .picker { flex-direction: row; justify-content: space-between; }
+    .pick { flex: 1; }
+    .hero { min-height: 520px; }
+    .ghost { top: 280px; }
+    .scene { height: 760px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ridge { transition: none; } .glass, .ridge path { transition: none; } html { scroll-behavior: auto; } }
+</style>
+<script>
+  (function () { var t = null; try { t = localStorage.getItem('tr_theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') t = (window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t); })();
+</script>
+
+<div class="scene" aria-hidden="true">
+  <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+  <svg class="ridge" id="r1" viewBox="0 0 1200 880" preserveAspectRatio="xMidYMax slice"><path fill="var(--m1)" fill-opacity=".55" d="M0 880V600l120-70 90 40 140-120 110 90 130-170 150 160 110-80 120 130 100-90 130 110v280z"/></svg>
+  <svg class="ridge" id="r2" viewBox="0 0 1200 880" preserveAspectRatio="xMidYMax slice"><path fill="var(--m1)" d="M0 880V700l140-90 120 70 160-130 130 100 150-150 170 170 120-90 210 120v280z"/></svg>
+  <svg class="ridge" id="r3" viewBox="0 0 1200 880" preserveAspectRatio="xMidYMax slice"><path fill="var(--m2)" d="M0 880V780l200-80 160 60 190-90 200 90 180-60 270 80v220z"/></svg>
+</div>
+
+<nav class="nav glass" aria-label="Page sections">
+  <a href="#top" class="on" aria-label="Top"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg></a>
+  <a href="#about" aria-label="About me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg></a>
+  <a href="#games" aria-label="Games"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M7 10v5M4.5 12.5h5M16 11h.01M18.5 14h.01"/></svg></a>
+  <span class="sep" aria-hidden="true"></span>
+  <button type="button" class="theme" id="themeBtn" aria-label="Switch to light mode" title="Toggle light / dark">
+    <svg class="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></svg>
+    <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  </button>
+</nav>
+
+<div class="wrap" id="top">
+  <header class="hero">
+    <div class="ghost" aria-hidden="true">BIST</div>
+    <div class="cap">Makerere University · Kampala</div>
+    <h1 class="name">Trevor</h1>
+    <p class="tagline">Information Systems &amp; Technology student turning complex logic into clean, scalable apps.</p>
+    <div class="row">
+      <span class="chip">Databases</span><span class="chip">Project management</span><span class="chip">Modern web stacks</span><span class="chip">Gamer</span>
+    </div>
+  </header>
+
+  <div class="float-grid">
+    <section class="glass card" id="about" style="padding:28px;">
+      <h2>About me</h2>
+      <p>Hi, my name is Trevor. I am a student pursuing a Bachelor of Information Systems and Technology (BIST) at Makerere University's College of Computing and Information Sciences in Kampala. My academic world revolves around bridging technical architecture with real-world problem solving.</p>
+      <p>From building database systems and software project management frameworks to exploring modern web stacks, my coursework directly feeds into my hands-on software development work, turning complex logic into clean, scalable applications.</p>
+      <div class="pillbox">Bachelor of Information Systems and Technology<small>College of Computing and Information Sciences · Makerere University</small></div>
+    </section>
+
+    <div>
+      <div class="glass mood">
+        <span class="cap">Pick a mood</span>
+        <div class="marker" aria-hidden="true"><i id="mk"></i></div>
+        <div class="bar" role="group" aria-label="Scene mood">
+          <button type="button" data-mood="night" aria-label="Night"></button>
+          <button type="button" data-mood="deep" aria-label="Deep teal"></button>
+          <button type="button" data-mood="mist" aria-label="Mist"></button>
+          <button type="button" data-mood="dusk" aria-label="Dusk"></button>
+        </div>
+      </div>
+      <div class="glass card" style="margin-top:20px;">
+        <h2>Beyond the code</h2>
+        <p>When I'm not stepping through code or managing projects, you will almost certainly find me deep in a gaming session. Gaming isn't just a pastime for me. It is a mix of strategic thinking, immersive storytelling, and competitive action.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="games">
+    <div class="cap">Gaming &amp; strategy</div>
+    <h2 class="sec-title">My go-to titles</h2>
+    <div class="games">
+      <div class="glass picker" role="tablist" aria-label="Game types" id="picker">
+        <button class="pick" role="tab" type="button" aria-selected="true" data-k="sim"><b>SIM</b><span>Sports</span></button>
+        <button class="pick" role="tab" type="button" aria-selected="false" data-k="str"><b>STR</b><span>Strategy</span></button>
+        <button class="pick" role="tab" type="button" aria-selected="false" data-k="act"><b>ACT</b><span>Action</span></button>
+      </div>
+      <div class="glass card detail" id="detail" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="study">
+    <div class="cap">What I study</div>
+    <h2 class="sec-title">Coursework</h2>
+    <div class="study">
+      <div class="glass card"><h3>Database systems</h3><p>Designing and building databases that keep data organised and reliable.</p></div>
+      <div class="glass card"><h3>Project management</h3><p>Software project management frameworks that keep builds on track.</p></div>
+      <div class="glass card"><h3>Modern web stacks</h3><p>Hands-on development of clean, scalable applications.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>student•developer / Kampala</span>
+    <svg class="barcode" viewBox="0 0 110 34" aria-hidden="true"><g stroke="currentColor"><path stroke-width="2" d="M4 2v30M9 2v30M16 2v30M20 2v30M27 2v30M31 2v30M38 2v30M45 2v30M50 2v30M57 2v30M62 2v30M69 2v30M73 2v30M80 2v30M87 2v30M92 2v30M99 2v30M105 2v30"/><path stroke-width="1" d="M12 2v30M24 2v30M35 2v30M42 2v30M54 2v30M66 2v30M77 2v30M84 2v30M96 2v30"/></g></svg>
+    <a href="#top">Back to top <svg viewBox="0 0 56 14"><path d="M1 7h52M47 2l6 5-6 5"/></svg></a>
+  </footer>
+</div>
+
+<div class="sess" id="sess" role="alertdialog" aria-modal="true" aria-labelledby="sessT" aria-describedby="sessD">
+  <div class="glass box">
+    <h2 id="sessT"></h2>
+    <p id="sessD"></p>
+    <div class="count" id="sessC" aria-hidden="true"></div>
+    <div class="btns" id="sessB"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  // Light / dark theme
+  var themeBtn = document.getElementById('themeBtn');
+  function setTheme(t, save) {
+    root.setAttribute('data-theme', t);
+    themeBtn.setAttribute('aria-label', t === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+    if (save) store('tr_theme', t);
+  }
+  setTheme(root.getAttribute('data-theme'), false);
+  themeBtn.addEventListener('click', function () { setTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light', true); });
+  if (window.matchMedia) {
+    var mq = matchMedia('(prefers-color-scheme: light)');
+    var follow = function (e) { if (!store('tr_theme')) setTheme(e.matches ? 'light' : 'dark', false); };
+    if (mq.addEventListener) mq.addEventListener('change', follow);
+  }
+
+  // Session timeout: warn after inactivity, then lock until the visitor resumes.
+  var IDLE_MS = 5 * 60 * 1000;   // total inactivity allowed
+  var WARN_MS = 60 * 1000;       // warning shown during the last minute
+  var sess = document.getElementById('sess'), sT = document.getElementById('sessT'), sD = document.getElementById('sessD'),
+      sC = document.getElementById('sessC'), sB = document.getElementById('sessB');
+  var state = 'active', lastFocus = null, lastWrite = 0;
+  var lockEls = [document.querySelector('.wrap'), document.querySelector('.nav')];
+  var last = Date.now();   // every page load starts a fresh session
+  function touch() { last = Date.now(); if (last - lastWrite > 2000) { lastWrite = last; store('tr_last', String(last)); } }
+  function setLocked(on) {
+    lockEls.forEach(function (el) { if (!el) return; if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); });
+    sess.classList.toggle('on', on);
+  }
+  function button(label, cls, fn) { var b = document.createElement('button'); b.type = 'button'; b.textContent = label; if (cls) b.className = cls; b.addEventListener('click', fn); return b; }
+  function showSess(mode) {
+    if (state === 'active') lastFocus = document.activeElement;
+    state = mode; sB.innerHTML = '';
+    if (mode === 'warn') {
+      sT.textContent = 'Still there?'; sD.textContent = 'You have been inactive for a while. Your session will end in';
+      sB.appendChild(button('Stay on page', '', resume)); sC.style.display = '';
+    } else {
+      sT.textContent = 'Session expired'; sD.textContent = 'You were signed out after a period of inactivity.'; sC.style.display = 'none';
+      sB.appendChild(button('Resume session', '', resume));
+    }
+    setLocked(true); sB.firstChild.focus();
+  }
+  function resume() {
+    state = 'active'; last = Date.now(); lastWrite = last; store('tr_last', String(last));
+    setLocked(false); if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function check() {
+    var idle = Date.now() - last;
+    if (idle >= IDLE_MS) { if (state !== 'expired') showSess('expired'); }
+    else if (idle >= IDLE_MS - WARN_MS) {
+      if (state !== 'warn') showSess('warn');
+      var left = Math.ceil((IDLE_MS - idle) / 1000);
+      sC.textContent = Math.floor(left / 60) + ':' + ('0' + (left % 60)).slice(-2);
+    } else if (state === 'warn') resume();
+  }
+  ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'wheel'].forEach(function (ev) {
+    window.addEventListener(ev, function () { if (state === 'active') touch(); }, { passive: true, capture: true });
+  });
+  // activity in another tab keeps this one alive too
+  window.addEventListener('storage', function (e) { if (e.key === 'tr_last' && e.newValue && state !== 'expired') { last = parseInt(e.newValue, 10) || last; check(); } });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) check(); });
+  setInterval(check, 1000); check();
+
+  // Mood bar
+  var moods = ['night', 'deep', 'mist', 'dusk'], btns = document.querySelectorAll('.bar button'), mk = document.getElementById('mk');
+  function setMood(m, save) {
+    root.setAttribute('data-mood', m);
+    var i = moods.indexOf(m); mk.style.left = (i * 25 + 12.5) + '%';
+    if (save) store('tr_mood', m);
+  }
+  Array.prototype.forEach.call(btns, function (b) { b.addEventListener('click', function () { setMood(b.dataset.mood, true); }); });
+  var s = store('tr_mood'); setMood(moods.indexOf(s) > -1 ? s : 'mist', false);
+
+  // Games
+  var tick = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>';
+  var data = {
+    sim: { h: 'Sports simulation &amp; management', t: 'Managing squads and playing tactical matches.', i: [['FIFA Career modes', 'Managing squads season after season.'], ['EA Sports FC Mobile', 'Tactical matches on the go.'], ['eFootball Mobile', 'Tactical matches on the go.']] },
+    str: { h: 'Strategy &amp; world-building', t: 'Crafting intricate urban layouts and managing local economies.', i: [['Cities: Skylines', 'Planning layouts and running a city economy.'], ['SimCity BuildIt', 'Building and managing a growing city.']] },
+    act: { h: 'Action &amp; open-world', t: 'Immersing myself in action-heavy shooters and expansive open-world titles.', i: [['Call of Duty', 'Action-heavy, competitive shooting.'], ['Grand Theft Auto V', 'An expansive open world to explore.']] }
+  };
+  var detail = document.getElementById('detail'), tabs = document.querySelectorAll('.pick');
+  function show(k) {
+    var d = data[k];
+    detail.innerHTML = '<h3>' + d.h + '</h3><p class="lead">' + d.t + '</p><ul class="titles">' +
+      d.i.map(function (x) { return '<li>' + tick + '<div><strong>' + x[0] + '</strong><span>' + x[1] + '</span></div></li>'; }).join('') + '</ul>';
+    Array.prototype.forEach.call(tabs, function (t) { t.setAttribute('aria-selected', String(t.dataset.k === k)); });
+  }
+  Array.prototype.forEach.call(tabs, function (t) { t.addEventListener('click', function () { show(t.dataset.k); }); });
+  show('sim');
+
+  // Highlight current nav icon
+  var links = document.querySelectorAll('.nav a'), ids = ['top', 'about', 'games'];
+  function onScroll() {
+    var cur = 0;
+    ids.forEach(function (id, i) { var el = document.getElementById(id); if (el && el.getBoundingClientRect().top < window.innerHeight * .4) cur = i; });
+    Array.prototype.forEach.call(links, function (a, i) { a.classList.toggle('on', i === cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // Gentle parallax on the ridges
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    var rs = [document.getElementById('r1'), document.getElementById('r2'), document.getElementById('r3')];
+    window.addEventListener('mousemove', function (e) {
+      var x = (e.clientX / window.innerWidth - .5);
+      rs.forEach(function (r, i) { r.style.transform = 'translateX(' + (x * (i + 1) * -14) + 'px)'; });
+    }, { passive: true });
+  }
+})();
+</script>
+
+<a href="../index.html" style="position:fixed;left:16px;bottom:16px;z-index:999;padding:8px 14px;border-radius:999px;background:#111;color:#fff;font:14px sans-serif;text-decoration:none;opacity:.85">&larr; Group 12</a>

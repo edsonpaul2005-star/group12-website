@@ -1,0 +1,297 @@
+<title>Karuhanga Mark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Jost:wght@300;400;500&family=Pinyon+Script&display=swap">
+<style>
+  /* Layout: dark wine editorial page. Giant serif surname, script first name over it,
+     then bordered panels for About, Hobbies and Goals. Light mode swaps to cream and deep wine. */
+  :root {
+    --bg: #0f0809;
+    --panel: #170d0f;
+    --panel-2: #1e1114;
+    --line: #34191d;
+    --ink: #efe3da;
+    --muted: #a58f88;
+    --sand: #e2bfa8;
+    --wine: #c0394a;
+    --wine-deep: #5b1520;
+    --on-sand: #1a0d0f;
+    --display: "Bodoni Moda", "Didot", "Times New Roman", serif;
+    --body: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --script: "Pinyon Script", "Brush Script MT", cursive;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
+  :root[data-theme="light"] {
+    --bg: #f7f0ea; --panel: #fffaf6; --panel-2: #f1e5dc; --line: #e2cfc3; --ink: #2a1518; --muted: #7b6560;
+    --sand: #7a1f2b; --wine: #a3232f; --wine-deep: #f0d6cd; --on-sand: #fff6f0;
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] { color-scheme: dark; }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-weight: 300; font-size: 16px; line-height: 1.7;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0;
+    overflow-x: hidden; transition: background .3s, color .3s;
+  }
+  .wrap { width: min(1080px, 100%); margin: 0 auto; }
+  p { margin: 0; }
+  h1, h2, h3 { margin: 0; font-weight: 400; }
+  .caps { font-size: .72rem; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); }
+
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 22px; flex-wrap: wrap; }
+  .bar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pill { font: inherit; font-size: .78rem; letter-spacing: .08em; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: border-color .2s, background .2s; }
+  .pill:hover { border-color: var(--sand); }
+  .pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--wine); }
+  .pill.warn .dot { background: #e0a030; }
+  .pill b { font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  .hero { position: relative; padding-block: 24px 56px; overflow: hidden; }
+  .surname { font-family: var(--display); position: relative; font-size: clamp(2.4rem, 11.5vw, 9rem); line-height: .95; letter-spacing: -.02em; color: var(--sand); text-transform: uppercase; margin-top: 10px; }
+  .first { font-family: var(--script); font-size: clamp(3rem, 11vw, 7rem); color: var(--wine); line-height: 1; margin: -.28em 0 0 .2em; position: relative; }
+  .hero-row { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; margin-top: 28px; align-items: end; }
+  .hero-row > * { min-width: 0; }
+  .tag { font-size: clamp(1.15rem, 2.6vw, 1.55rem); letter-spacing: .12em; text-transform: uppercase; line-height: 1.5; max-width: 22ch; font-weight: 300; }
+  .status { margin-top: 24px; display: inline-flex; padding: 10px 20px; border: 1px solid var(--line); border-radius: 999px; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; gap: 10px; align-items: center; }
+  .hero-note { color: var(--muted); max-width: 38ch; justify-self: end; font-size: .98rem; }
+  .petals { position: absolute; right: -60px; top: 10px; width: 300px; opacity: .4; pointer-events: none; z-index: 0; }
+  .surname, .first { z-index: 1; }
+
+  .panel { border: 1px solid var(--line); background: var(--panel); }
+  .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px 26px; border-bottom: 1px solid var(--line); }
+  .head h2 { font-size: .8rem; letter-spacing: .24em; text-transform: uppercase; font-family: var(--body); font-weight: 400; }
+  .head .caps { text-align: right; }
+
+  .about { display: grid; grid-template-columns: .8fr 1.2fr; }
+  .about > * { min-width: 0; }
+  .about-side { padding: 34px 26px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
+  .about-side .big { font-family: var(--display); font-size: clamp(1.7rem, 3.6vw, 2.5rem); line-height: 1.15; color: var(--sand); }
+  .about-side .scr { font-family: var(--script); font-size: 2.2rem; color: var(--wine); line-height: 1; }
+  .about-text { padding: 34px 30px; display: grid; gap: 18px; color: var(--ink); }
+  .about-text p { max-width: 62ch; }
+
+  .gap { height: 20px; }
+  .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .cell { padding: 26px; border-right: 1px solid var(--line); min-width: 0; text-align: left; background: transparent; color: var(--ink); font: inherit; border-top: 0; border-bottom: 0; border-left: 0; cursor: pointer; transition: background .25s; }
+  .cell:last-child { border-right: 0; }
+  .cell:hover, .cell.open { background: var(--panel-2); }
+  .cell svg { width: 30px; height: 30px; stroke: var(--wine); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; display: block; }
+  .cell h3 { font-family: var(--display); font-size: 1.35rem; margin: 16px 0 4px; color: var(--sand); }
+  .cell .more { color: var(--muted); font-size: .92rem; margin-top: 8px; }
+  .cell .tap { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+
+  .goals { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .goal { padding: 30px 26px; border-right: 1px solid var(--line); min-width: 0; }
+  .goal:last-child { border-right: 0; }
+  .goal h3 { font-family: var(--display); font-size: 1.5rem; color: var(--sand); }
+  .goal p { color: var(--muted); margin-top: 8px; font-size: .95rem; }
+  .values { padding: 34px 26px; border-top: 1px solid var(--line); display: flex; gap: 22px; align-items: flex-start; }
+  .values q { font-family: var(--display); font-size: clamp(1.25rem, 3vw, 1.8rem); line-height: 1.35; color: var(--ink); quotes: none; max-width: 38ch; }
+  .values .mark { font-family: var(--display); font-size: 4rem; line-height: .7; color: var(--wine); }
+
+  footer { padding-block: 38px 44px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; }
+  footer .scr { font-family: var(--script); font-size: 2.6rem; color: var(--wine); line-height: 1; }
+
+  /* session timeout */
+  .veil { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 20px; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: blur(6px); }
+  .box { width: min(420px, 100%); background: var(--panel); border: 1px solid var(--sand); padding: 30px; text-align: center; }
+  .box h2 { font-family: var(--display); font-size: 1.7rem; color: var(--sand); }
+  .box p { color: var(--muted); margin-top: 10px; }
+  .count { font-family: var(--display); font-size: 3rem; color: var(--wine); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .btn { margin-top: 20px; font: inherit; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; padding: 13px 28px; border-radius: 999px; border: 0; background: var(--sand); color: var(--on-sand); cursor: pointer; }
+  .btn:hover { opacity: .88; }
+  [hidden] { display: none !important; }
+  :focus-visible { outline: 2px solid var(--sand); outline-offset: 3px; }
+
+  @media (max-width: 860px) {
+    .hero-row { grid-template-columns: 1fr; gap: 22px; }
+    .hero-note { justify-self: start; }
+    .about { grid-template-columns: 1fr; }
+    .about-side { border-right: 0; border-bottom: 1px solid var(--line); }
+    .grid4 { grid-template-columns: repeat(2, 1fr); }
+    .cell:nth-child(2) { border-right: 0; }
+    .cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .goals { grid-template-columns: 1fr; }
+    .goal { border-right: 0; border-bottom: 1px solid var(--line); }
+    .goal:last-child { border-bottom: 0; }
+    .petals { width: 200px; right: -60px; }
+  }
+  @media (max-width: 480px) {
+    .grid4 { grid-template-columns: 1fr; }
+    .cell { border-right: 0; border-bottom: 1px solid var(--line); }
+    .cell:last-child { border-bottom: 0; }
+    .head { padding: 16px 18px; }
+    .about-side, .about-text, .goal, .values { padding-inline: 18px; }
+  }
+</style>
+
+<div class="wrap">
+  <div class="bar">
+    <span class="caps">BIST · Makerere University</span>
+    <div class="bar-right">
+      <button class="pill" id="sessChip" type="button" title="Time left before your session ends. Click to extend."><span class="dot"></span>Session <b id="left">2:00</b></button>
+      <button class="pill" id="modeBtn" type="button" aria-label="Switch between light and dark mode">Light mode</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <svg class="petals" viewBox="0 0 200 200" aria-hidden="true">
+      <g fill="none" stroke="var(--wine)" stroke-width="1.2">
+        <path d="M100 100 C60 60 70 10 100 8 C130 10 140 60 100 100Z"/>
+        <path d="M100 100 C140 60 190 70 192 100 C190 130 140 140 100 100Z"/>
+        <path d="M100 100 C140 140 130 190 100 192 C70 190 60 140 100 100Z"/>
+        <path d="M100 100 C60 140 10 130 8 100 C10 70 60 60 100 100Z"/>
+        <circle cx="100" cy="100" r="9"/>
+      </g>
+    </svg>
+    <div class="caps">Information Systems &amp; Technology · Year Two</div>
+    <h1>
+      <div class="surname">Karuhanga</div>
+      <div class="first">Mark</div>
+    </h1>
+    <div class="hero-row">
+      <div>
+        <p class="tag">Learning to build technology that solves real problems.</p>
+        <div class="status">Open to learning <span aria-hidden="true">✦</span></div>
+      </div>
+      <p class="hero-note">A second-year student at Makerere University who enjoys technology, basketball and music, and believes every new experience is a chance to grow.</p>
+    </div>
+  </header>
+
+  <section class="panel" id="about" aria-labelledby="aboutH">
+    <div class="head"><h2 id="aboutH">About me</h2><span class="caps">Makerere University</span></div>
+    <div class="about">
+      <div class="about-side">
+        <div class="big">Passionate about technology and learning.</div>
+        <div class="scr">Karuhanga Mark</div>
+      </div>
+      <div class="about-text">
+        <p>My name is Karuhanga Mark, and I am a Year Two student at Makerere University, pursuing a Bachelor of Information Systems and Technology. I am passionate about technology, innovation, and learning new skills that can help me solve real-life problems.</p>
+        <p>I enjoy playing basketball, listening to music, and exploring new technologies in my free time. These hobbies help me stay active, relax, and develop my creativity. I also enjoy spending time with friends, sharing ideas, and learning from other people.</p>
+        <p>As an Information Systems and Technology student, my goal is to gain practical knowledge and become skilled in areas such as web development, database management, and computer networking. I believe in hard work, consistency, and continuous learning because every new experience is an opportunity to grow.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="gap"></div>
+
+  <section class="panel" id="hobbies" aria-labelledby="hobH">
+    <div class="head"><h2 id="hobH">Hobbies</h2><span class="caps">Tap a card</span></div>
+    <div class="grid4">
+      <button class="cell" type="button" aria-expanded="false" data-more="Keeps me active and teaches me to work with a team.">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.5 5.5c3 3 3 10 0 13M18.5 5.5c-3 3-3 10 0 13"/></svg>
+        <h3>Basketball</h3><span class="tap">Tap to read</span>
+      </button>
+      <button class="cell" type="button" aria-expanded="false" data-more="Helps me relax and keeps my creativity moving.">
+        <svg viewBox="0 0 24 24"><path d="M9 18V6l11-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>
+        <h3>Music</h3><span class="tap">Tap to read</span>
+      </button>
+      <button class="cell" type="button" aria-expanded="false" data-more="Trying new tools and ideas is how I pick up new skills.">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M9 9l-2 2 2 2M15 9l2 2-2 2"/></svg>
+        <h3>New technology</h3><span class="tap">Tap to read</span>
+      </button>
+      <button class="cell" type="button" aria-expanded="false" data-more="Sharing ideas and learning from other people.">
+        <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.4"/><path d="M3 19c0-3.2 2.7-5.5 6-5.5s6 2.3 6 5.5M16 14c2.8 0 5 1.8 5 4.5"/></svg>
+        <h3>Friends</h3><span class="tap">Tap to read</span>
+      </button>
+    </div>
+  </section>
+
+  <div class="gap"></div>
+
+  <section class="panel" id="goals" aria-labelledby="goalH">
+    <div class="head"><h2 id="goalH">Where I'm heading</h2><span class="caps">Skills I am building</span></div>
+    <div class="goals">
+      <div class="goal"><h3>Web development</h3><p>Building clear, useful websites and applications.</p></div>
+      <div class="goal"><h3>Database management</h3><p>Organising data so it is safe, accurate and easy to use.</p></div>
+      <div class="goal"><h3>Computer networking</h3><p>Understanding how systems connect and share information.</p></div>
+    </div>
+    <div class="values">
+      <span class="mark" aria-hidden="true">“</span>
+      <q>I believe in hard work, consistency, and continuous learning, because every new experience is an opportunity to grow.</q>
+    </div>
+  </section>
+
+  <footer>
+    <div><div class="scr">Thank you for visiting</div></div>
+    <div class="caps">© <span id="yr">2026</span> Karuhanga Mark · Makerere University</div>
+  </footer>
+</div>
+
+<!-- Session warning -->
+<div class="veil" id="warn" hidden role="alertdialog" aria-modal="true" aria-labelledby="warnH">
+  <div class="box">
+    <h2 id="warnH">Still there?</h2>
+    <p>Your session will end soon because there has been no activity.</p>
+    <div class="count" id="warnCount">0:30</div>
+    <button class="btn" id="stayBtn" type="button">Stay on the page</button>
+  </div>
+</div>
+<!-- Session expired -->
+<div class="veil" id="gone" hidden role="alertdialog" aria-modal="true" aria-labelledby="goneH">
+  <div class="box">
+    <h2 id="goneH">Session expired</h2>
+    <p>You were away for a while, so the session ended to keep things tidy.</p>
+    <button class="btn" id="againBtn" type="button">Start a new session</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+  // Light / dark mode
+  var modeBtn = document.getElementById('modeBtn'), mode = 'dark';
+  function setMode(m, save) {
+    mode = m;
+    if (m === 'light') root.setAttribute('data-theme', 'light'); else root.setAttribute('data-theme', 'dark');
+    modeBtn.textContent = m === 'light' ? 'Dark mode' : 'Light mode';
+    if (save) store('km_mode', m);
+  }
+  modeBtn.addEventListener('click', function () { setMode(mode === 'light' ? 'dark' : 'light', true); });
+  setMode(store('km_mode') === 'light' ? 'light' : 'dark', false);
+
+  // Hobby cards
+  Array.prototype.forEach.call(document.querySelectorAll('.cell'), function (c) {
+    var note = null;
+    c.addEventListener('click', function () {
+      var open = c.getAttribute('aria-expanded') !== 'true';
+      c.setAttribute('aria-expanded', String(open)); c.classList.toggle('open', open);
+      if (open && !note) { note = document.createElement('p'); note.className = 'more'; note.textContent = c.getAttribute('data-more'); c.appendChild(note); }
+      if (note) note.hidden = !open;
+      c.querySelector('.tap').textContent = open ? 'Tap to close' : 'Tap to read';
+    });
+  });
+
+  // Session timeout: ends after 2 minutes without activity, warns for the last 30 seconds
+  var TIMEOUT = 120, WARN = 30;
+  var last = Date.now(), ended = false;
+  var chip = document.getElementById('sessChip'), left = document.getElementById('left');
+  var warn = document.getElementById('warn'), gone = document.getElementById('gone'), wc = document.getElementById('warnCount');
+  function fmt(s) { s = Math.max(0, s); var m = Math.floor(s / 60), r = s % 60; return m + ':' + (r < 10 ? '0' : '') + r; }
+  function remaining() { return Math.ceil(TIMEOUT - (Date.now() - last) / 1000); }
+  function bump() { if (ended || !warn.hidden) return; last = Date.now(); tick(); }
+  function extend() { last = Date.now(); ended = false; warn.hidden = true; gone.hidden = true; tick(); }
+  function tick() {
+    var r = remaining();
+    if (r <= 0) {
+      ended = true; warn.hidden = true; gone.hidden = false; left.textContent = '0:00'; chip.classList.add('warn');
+      document.getElementById('againBtn').focus(); return;
+    }
+    left.textContent = fmt(r); chip.classList.toggle('warn', r <= WARN);
+    if (r <= WARN) { if (warn.hidden && !ended) { warn.hidden = false; document.getElementById('stayBtn').focus(); } wc.textContent = fmt(r); }
+  }
+  ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'].forEach(function (ev) { window.addEventListener(ev, bump, { passive: true }); });
+  chip.addEventListener('click', extend);
+  document.getElementById('stayBtn').addEventListener('click', extend);
+  document.getElementById('againBtn').addEventListener('click', extend);
+  setInterval(function () { if (!ended) tick(); }, 1000);
+  tick();
+
+  try { document.getElementById('yr').textContent = new Date().getFullYear(); } catch (e) {}
+})();
+</script>
+
+<a href="../index.html" style="position:fixed;left:16px;bottom:16px;z-index:999;padding:8px 14px;border-radius:999px;background:#111;color:#fff;font:14px sans-serif;text-decoration:none;opacity:.85">&larr; Group 12</a>

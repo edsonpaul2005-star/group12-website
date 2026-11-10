@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="description" content="The personal blog of Powell Tusiime, sharing his interests, experiences, ambitions and personal journey.">
+
+  <title>Powell Tusiime | My Personal Blog</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="header">
+    <a href="#home" class="logo">POWELL<span>.</span></a>
+
+    <nav id="navigation">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#sessions">My Sessions</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <button id="themeButton" class="theme-button">
+        ☀️ Light Mode
+      </button>
+
+      <button id="menuButton" class="menu-button"
+        aria-label="Toggle navigation" aria-expanded="false">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- INTRODUCTION -->
+    <section class="hero" id="home">
+
+      <div class="hero-content">
+        <p class="eyebrow">WELCOME TO MY PERSONAL SPACE</p>
+
+        <h1>
+          Hello, I'm <span>Powell Tusiime.</span>
+        </h1>
+
+        <h2>Exploring life, discovering purpose and building my future.</h2>
+
+        <p class="hero-description">
+          Welcome to my personal blog! This is a space where I share
+          my thoughts, interests, experiences and the different
+          lessons I encounter throughout life.
+
+          I believe that personal growth is a continuous journey.
+          Every experience, challenge and opportunity presents a
+          chance to learn something new, become better and move
+          closer to the person I aspire to be.
+
+          Through this blog, I invite you to explore a little about
+          who I am, what inspires me and the ambitions that continue
+          to shape my journey.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#sessions" class="primary-button">
+            Explore My Blog →
+          </a>
+
+          <a href="#about" class="secondary-button">
+            Get To Know Me
+          </a>
+        </div>
+
+        <div class="hero-note">
+          <span>✦</span> Learning. Growing. Becoming.
+        </div>
+      </div>
+
+      <div class="hero-image">
+        <div class="image-frame">
+          <img src="images/powell.jpg"
+            alt="Portrait of Powell Tusiime">
+        </div>
+
+        <div class="image-caption">
+          <span>THE PERSON BEHIND THE BLOG</span>
+          <h3>Powell Tusiime</h3>
+          <p>Creating my own story, one day at a time.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ABOUT ME -->
+    <section class="about section" id="about">
+
+      <div class="section-heading">
+        <p class="eyebrow">A LITTLE ABOUT ME</p>
+        <h2>Getting to Know <span>Powell</span></h2>
+        <p>
+          Every person has a story. Here is a little introduction
+          to mine.
+        </p>
+      </div>
+
+      <div class="about-content">
+        <div class="about-text">
+          <h3>Who Am I?</h3>
+
+          <p>
+            My name is Powell Tusiime. I am someone who believes
+            in growth, self-discovery and the importance of
+            continuously improving oneself. I enjoy exploring
+            new ideas, learning different skills and understanding
+            the world from different perspectives.
+          </p>
+
+          <p>
+            I would describe myself as a calm and thoughtful
+            individual who values meaningful experiences and
+            genuine connections. I may not always have everything
+            figured out, but I believe that having the willingness
+            to learn and the courage to keep moving forward is
+            already an important part of success.
+          </p>
+
+          <p>
+            This blog represents a small reflection of my identity,
+            the things I enjoy and the experiences that contribute
+            to my personal development.
+          </p>
+        </div>
+
+        <div class="about-highlight">
+          <span class="highlight-icon">✦</span>
+          <h3>My Personal Philosophy</h3>
+          <p>
+            "Success is not just about where you eventually arrive,
+            but also about who you become throughout the journey."
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- THREE BLOG SESSIONS -->
+    <section class="sessions section" id="sessions">
+
+      <div class="section-heading">
+        <p class="eyebrow">EXPLORE MY WORLD</p>
+        <h2>Three Chapters of <span>My Story</span></h2>
+
+        <p>
+          Get a closer look at the different aspects of my life,
+          the things that motivate me and the experiences that
+          continue to influence who I am becoming.
+        </p>
+      </div>
+
+      <div class="session-grid">
+
+        <!-- SESSION ONE -->
+        <article class="session-card">
+          <div class="session-number">01</div>
+          <div class="session-icon">👤</div>
+
+          <h3>About Me</h3>
+
+          <p>
+            Discover my background, personality, values and the
+            beliefs that influence how I approach life. This
+            section offers a glimpse into the person behind
+            the name.
+          </p>
+
+          <button class="read-button"
+            data-session="aboutMe">
+            Discover More →
+          </button>
+        </article>
+
+        <!-- SESSION TWO -->
+        <article class="session-card">
+          <div class="session-number">02</div>
+          <div class="session-icon">⚽</div>
+
+          <h3>My Interests</h3>
+
+          <p>
+            Explore some of the things I genuinely enjoy,
+            from football and technology to creativity,
+            learning and discovering new opportunities.
+          </p>
+
+          <button class="read-button"
+            data-session="interests">
+            Discover More →
+          </button>
+        </article>
+
+        <!-- SESSION THREE -->
+        <article class="session-card">
+          <div class="session-number">03</div>
+          <div class="session-icon">🚀</div>
+
+          <h3>My Journey</h3>
+
+          <p>
+            Take a closer look at my ambitions, personal
+            development, challenges and the lessons that
+            continue to shape my outlook on the future.
+          </p>
+
+          <button class="read-button"
+            data-session="journey">
+            Discover More →
+          </button>
+        </article>
+
+      </div>
+
+      <!-- SESSION DETAILS -->
+      <div class="session-details" id="sessionDetails" hidden>
+
+        <div class="details-header">
+          <p class="eyebrow">EXPLORE THE STORY</p>
+          <button id="closeDetails" aria-label="Close session details">
+            ✕
+          </button>
+        </div>
+
+        <h2 id="detailTitle"></h2>
+        <p id="detailDescription"></p>
+
+      </div>
+
+    </section>
+
+    <!-- PERSONAL VALUES -->
+    <section class="values section">
+
+      <div class="section-heading">
+        <p class="eyebrow">WHAT MATTERS TO ME</p>
+        <h2>Things I <span>Believe In</span></h2>
+      </div>
+
+      <div class="values-grid">
+
+        <div class="value-item">
+          <span>01</span>
+          <h3>Growth</h3>
+          <p>
+            Always remaining open to learning, improving
+            and becoming a better version of myself.
+          </p>
+        </div>
+
+        <div class="value-item">
+          <span>02</span>
+          <h3>Consistency</h3>
+          <p>
+            Understanding that meaningful achievements
+            are built through patience and continuous effort.
+          </p>
+        </div>
+
+        <div class="value-item">
+          <span>03</span>
+          <h3>Ambition</h3>
+          <p>
+            Having the courage to dream, set meaningful
+            goals and work towards creating a better future.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact section" id="contact">
+
+      <div class="contact-content">
+        <p class="eyebrow">LET'S CONNECT</p>
+
+        <h2>Thank You For Visiting <span>My Blog.</span></h2>
+
+        <p>
+          Thank you for taking the time to explore my personal
+          space and learn a little about my story. I hope you
+          enjoyed discovering my interests, experiences and
+          perspectives.
+
+          Every journey becomes more meaningful when we exchange
+          ideas, learn from one another and create genuine
+          connections. Feel free to say hello and share your
+          thoughts.
+        </p>
+
+        <a href="mailto:your-email@example.com"
+          class="primary-button">
+          Get In Touch →
+        </a>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <a href="#home" class="logo">POWELL<span>.</span></a>
+
+    <p>Learning. Growing. Becoming.</p>
+
+    <p>© <span id="year"></span> Powell Tusiime. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
